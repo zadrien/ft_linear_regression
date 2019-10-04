@@ -1,21 +1,27 @@
-def Parse(file):
+import csv
+
+def parse(file):
     x = []
     y = []
     
     f = open(file, "r")
-    f.readline()
-    for str in f:
-        line = str.rsplit()
-        line = line[0].split(",")
-        if len(line) == 2:
-            if line[0].isdigit() and line[1].isdigit():
-                x.append(int(line[0]))
-                y.append(int(line[1]))
-            else:
-                print("Not digit:\n", line)
-                return
+    reader = csv.reader(f)
+    next(reader)
+    for  row in reader:
+        if isfloat(row[0]) == True and isfloat(row[1]) == True:
+            x.append(float(row[0]))
+            y.append(float(row[1]))
         else:
-            print("Error too much argument in:\n", line)
+            print("Not digit:\n", row)
+            return
+
     f.close()
 
     return [x, y]
+
+def isfloat(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
