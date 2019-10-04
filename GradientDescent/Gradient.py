@@ -1,36 +1,26 @@
-import CostFunction
+import sys
 
-def Gradient(dataset, learningRate, t0 = 0, t1 = 0):
+iteration = 20000
 
-    cf = CostFuntion.CostFunction(dataset, t0, t1)
-    while True :
-        tmp0 = t0 - learningRate * (derivativeCostFunction(dataset, False, t0, t1))
-        tmp1 = t1 - learningRate * (derivativeCostFunction(dataset, True, t0, t1))
-        tmpcf = CostFuntion.CostFunction(dataset, tmp0, tmp1)
-        print("TO TEST:", tmp0, tmp1, tmpcf)
-        if tmpcf < cf:
-            t0 = tmp0
-            t1 = tmp1
-            cf = tmpcf
-            print("SAVE:", t0, t1, cf)
-        else:
-            print("WINNER: ", t0, t1, cf)
-            break
+def Gradient(dataset, learningRate, t0 = 0.0, t1 = 0.0):
+    for i in range(0, iteration):
+        tmp = derivateCostFunction(dataset, t0, t1)
         
+        t0 = t0 - (learningRate * tmp[0])
+        t1 = t1 - (learningRate * tmp[1])
+    return [ t0, t1 ]
+
         
     
     
 
-def derivativeCostFunction(dataset, multiply=False, t0 = 0, t1 = 0):
-    i = 0
-    m = len(dataset);
-    cf = 0
-    while i < m:
-        cf += ((t0 + (t1 * dataset[i][0])) - dataset[i][1])
-        if multiply:
-            cf *= dataset[i][0]
-        i += 1
+def derivateCostFunction(dataset, t0 = 0, t1 = 0):
+    m = len(dataset[0]);
+    d0 = 0.0
+    d1 = 0.0
+    for i in range(0, m):
+        d0 += t0 + (t1 * (float(dataset[0][i]) / 10000) ) - float(dataset[1][i])
+        d1 += (t0 + (t1 * (float(dataset[0][i]) / 10000)) - float(dataset[1][i])) * (float(dataset[0][i]) / 10000)
 
-    res = cf / m
 
-    return res
+    return [ (1/m) * d0, (1/m) * d1]

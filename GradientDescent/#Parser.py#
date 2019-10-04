@@ -1,10 +1,13 @@
+import csv
+
 def Parse(file):
     x = []
     y = []
     
     f = open(file, "r")
-    f.readline()
-    for str in f:
+    reader = csv.reader(file)
+    reader
+    for  in f:
         line = str.rsplit()
         line = line[0].split(",")
         if len(line) == 2:
